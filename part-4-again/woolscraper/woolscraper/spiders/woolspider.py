@@ -16,7 +16,7 @@ class WoolspiderSpider(scrapy.Spider):
                 'url': yarn.css('h2 a').attrib['href']
             }
 
-        next_page = response.css('.changepagebutton ::attr(href)').extract_first()
+        next_page = response.css('.changepagebutton ::attr(href)').get()
 
         if next_page is not None:
             yield response.follow(next_page, callback=self.parse)
