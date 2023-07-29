@@ -3,7 +3,7 @@ import scrapy
 
 class WoolspiderSpider(scrapy.Spider):
     name = "woolspider"
-    allowed_domains = ["www.woolwarehouse.co.uk/yarn"]
+    allowed_domains = ["woolwarehouse.co.uk"]
     start_urls = ["https://www.woolwarehouse.co.uk/yarn"]
 
     def parse(self, response):

@@ -3,7 +3,7 @@ import scrapy
 
 class BookspiderSpider(scrapy.Spider):
     name = "bookspider"
-    allowed_domains = ["www.woolwarehouse.co.uk/yarn"]
+    allowed_domains = ["books.toscrape.com"]
     start_urls = ["https://books.toscrape.com"]
 
     def parse(self, response):
@@ -16,11 +16,11 @@ class BookspiderSpider(scrapy.Spider):
                 'url': book.css('h3 a').attrib['href']
             }
 
-        next_page = response.css('li.next a ::attr(href)').get()
+        next_page = response.css('li.next a ::attr(href)').extract_first()
 
         if next_page is not None:
             if 'catalogue/' in next_page:
                 next_page_url = 'https://books.toscrape.com/' + next_page
             else:
                 next_page_url = 'https://books.toscrape.com/catalogue/' + next_page
-            yield response.follow(next_page_url, callback= self.parse)
+            yield scrapy.Request(next_page_url, callback=self.parse)
