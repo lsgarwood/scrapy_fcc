@@ -10,9 +10,12 @@ class WoolspiderIiSpider(scrapy.Spider):
         yarns = response.css('li.item')
 
         for yarn in yarns:
-            next_page = yarn.css('h2 a ::attr(href)').get()
+            yarn_url = yarn.css('h2 a ::attr(href)').get()
 
-            yield response.follow(next_page, callback=self.parse)
+            yield response.follow(yarn_url, callback=self.parse_book_page)
+
+    def parse_book_page(self, response):
+        pass
 
 
         # yield{
@@ -20,3 +23,13 @@ class WoolspiderIiSpider(scrapy.Spider):
         #         'price': yarn.css('.gbp-price .gbp-price-value ::text').get(),
         #         'url': yarn.css('h2 a').attrib['href']
         #     }
+
+        # hxs = HtmlXPathSelector(response)
+        # items = hxs.select('//table[@class="tablehd"]/td')
+
+        # for item in items:
+        #     my_item = MyItem()
+        #     my_item['value'] = item.select('.//text()').extract()
+        #     yield my_item
+
+        # response.css('.data-table ::text').getall()
