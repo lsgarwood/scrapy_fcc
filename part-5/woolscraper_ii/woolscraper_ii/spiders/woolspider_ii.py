@@ -11,25 +11,23 @@ class WoolspiderIiSpider(scrapy.Spider):
 
         for yarn in yarns:
             yarn_url = yarn.css('h2 a ::attr(href)').get()
-
             yield response.follow(yarn_url, callback=self.parse_book_page)
 
+        next_page = response.css('.changepagebutton ::attr(href)').get()
+        if next_page is not None:
+            yield response.follow(next_page, callback=self.parse)
+
     def parse_book_page(self, response):
-        pass
+        table_rows = response.css("table tr")
 
-
-        # yield{
-        #         'name': yarn.css('h2 a::text').get(),
-        #         'price': yarn.css('.gbp-price .gbp-price-value ::text').get(),
-        #         'url': yarn.css('h2 a').attrib['href']
-        #     }
-
-        # hxs = HtmlXPathSelector(response)
-        # items = hxs.select('//table[@class="tablehd"]/td')
-
-        # for item in items:
-        #     my_item = MyItem()
-        #     my_item['value'] = item.select('.//text()').extract()
-        #     yield my_item
-
-        # response.css('.data-table ::text').getall()
+        yield {
+            'brand_name': table_rows[0].css("td ::text").get(),
+            'yarn_name': table_rows[1].css("td ::text").get(),
+            'man_part_code': table_rows[2].css("td ::text").get(),
+            # 'shade': hi,
+            # 'ball_weight': hi,
+            # 'length': hi,
+            # 'needle_size': hi,
+            # 'blend': hi,
+            # 'url': response.url
+        }

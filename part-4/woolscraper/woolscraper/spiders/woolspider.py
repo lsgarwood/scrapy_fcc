@@ -10,7 +10,7 @@ class WoolspiderSpider(scrapy.Spider):
         yarns = response.css('li.item')
 
         for yarn in yarns:
-            yield{
+            yield {
                 'name': yarn.css('h2 a::text').get(),
                 'price': yarn.css('.gbp-price .gbp-price-value ::text').get(),
                 'url': yarn.css('h2 a').attrib['href']
